@@ -1,7 +1,0 @@
-parameters:
-    db.dsn: "pgsql:host=kickass_yonath.docker;port=5432;dbname=statistics"
-    db.user: postgres
-    db.password: ~
-    
-    logger.file: 'php://stdout'
-    logger.loglevel: DEBUG

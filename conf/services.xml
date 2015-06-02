@@ -1,0 +1,117 @@
+<?xml version="1.0" ?>
+<container xmlns="http://symfony.com/schema/dic/services"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
+    <parameters>
+        <parameter key="db.dsn" type="string">pgsql:host=kickass_yonath.docker;port=5432;dbname=statistics</parameter>
+        <parameter key="db.user" type="string">postgres</parameter>
+        <parameter key="db.password" type="string"></parameter>
+
+        <parameter key="logger.loglevel" type="constant">Monolog\Logger::DEBUG</parameter>
+        <parameter key="logger.file" type="string">php://stdout</parameter>
+    </parameters>
+
+    <services>
+        <service id="log.stream_handler" class="Monolog\Handler\StreamHandler">
+            <argument>%logger.file%</argument>
+            <argument>%logger.loglevel%</argument>
+        </service>
+
+        <service id="logger" class="Monolog\Logger">
+            <argument type="string">updatedb</argument>
+            <call method="pushHandler">
+                 <argument type="service" id="log.stream_handler" />
+            </call>
+        </service>
+
+        <service id="dbconnection" class="PDO">
+            <argument>%db.dsn%</argument>
+            <argument>%db.user%</argument>
+            <argument>%db.password%</argument>
+            <call method="setAttribute">
+                 <argument type="constant">PDO::ATTR_ERRMODE</argument>
+                 <argument type="constant">PDO::ERRMODE_EXCEPTION</argument>
+            </call>
+        </service>
+
+        <service id="updatedb_command" class="CanalTP\StatCompiler\Command\UpdateDbCommand">
+            <call method="setLogger">
+                 <argument type="service" id="logger" />
+            </call>
+        </service>
+
+        <!-- Updaters -->
+        <service id="updaters.request_calls" class="CanalTP\StatCompiler\Updater\RequestCallsUpdater">
+            <argument type="service" id="dbconnection" />
+            <call method="setLogger">
+                 <argument type="service" id="logger" />
+            </call>
+            <tag name="updatedb.updater" />
+        </service>
+
+        <service id="updaters.error_stats" class="CanalTP\StatCompiler\Updater\ErrorStatsUpdater">
+            <argument type="service" id="dbconnection" />
+            <call method="setLogger">
+                 <argument type="service" id="logger" />
+            </call>
+            <tag name="updatedb.updater" />
+        </service>
+
+        <service id="updaters.journey_request_stats" class="CanalTP\StatCompiler\Updater\JourneyRequestStatsUpdater">
+            <argument type="service" id="dbconnection" />
+            <call method="setLogger">
+                 <argument type="service" id="logger" />
+            </call>
+            <tag name="updatedb.updater" />
+        </service>
+
+        <service id="updaters.journey_cities" class="CanalTP\StatCompiler\Updater\JourneyCitiesUpdater">
+            <argument type="service" id="dbconnection" />
+            <call method="setLogger">
+                 <argument type="service" id="logger" />
+            </call>
+            <tag name="updatedb.updater" />
+        </service>
+
+        <service id="updaters.journey_infos" class="CanalTP\StatCompiler\Updater\JourneyInfosUpdater">
+            <argument type="service" id="dbconnection" />
+            <call method="setLogger">
+                 <argument type="service" id="logger" />
+            </call>
+            <tag name="updatedb.updater" />
+        </service>
+
+        <service id="updaters.journey_lines" class="CanalTP\StatCompiler\Updater\JourneyLinesUpdater">
+            <argument type="service" id="dbconnection" />
+            <call method="setLogger">
+                 <argument type="service" id="logger" />
+            </call>
+            <tag name="updatedb.updater" />
+        </service>
+
+        <service id="updaters.journey_modes" class="CanalTP\StatCompiler\Updater\JourneyModesUpdater">
+            <argument type="service" id="dbconnection" />
+            <call method="setLogger">
+                 <argument type="service" id="logger" />
+            </call>
+            <tag name="updatedb.updater" />
+        </service>
+
+        <service id="updaters.journey_networks" class="CanalTP\StatCompiler\Updater\JourneyNetworksUpdater">
+            <argument type="service" id="dbconnection" />
+            <call method="setLogger">
+                 <argument type="service" id="logger" />
+            </call>
+            <tag name="updatedb.updater" />
+        </service>
+
+        <service id="updaters.journey_stop_areas" class="CanalTP\StatCompiler\Updater\JourneyStopAreasUpdater">
+            <argument type="service" id="dbconnection" />
+            <call method="setLogger">
+                 <argument type="service" id="logger" />
+            </call>
+            <tag name="updatedb.updater" />
+        </service>
+
+    </services>
+</container>

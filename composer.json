@@ -3,7 +3,6 @@
     "type": "project",
     "require": {
         "php": ">=5.4",
-        "symfony/yaml": "^2.7",
         "symfony/console": "^2.7",
         "monolog/monolog": "^1.13",
         "doctrine/dbal": "~2.4.4",

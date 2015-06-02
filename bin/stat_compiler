@@ -11,13 +11,13 @@ use Symfony\Component\Console\Application;
 
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\Config\FileLocator;
-use Symfony\Component\DependencyInjection\Loader\YamlFileLoader;
+use Symfony\Component\DependencyInjection\Loader\XmlFileLoader;
 use CanalTP\StatCompiler\DependencyInjection\UpdaterCompilerPass;
 
 $container = new ContainerBuilder();
 $container->addCompilerPass(new UpdaterCompilerPass());
-$loader = new YamlFileLoader($container, new FileLocator(dirname(__DIR__) . '/conf'));
-$loader->load('services.yml');
+$loader = new XmlFileLoader($container, new FileLocator(dirname(__DIR__) . '/conf'));
+$loader->load('services.xml');
 $container->compile();
 
 $console = new Application();
