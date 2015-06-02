@@ -41,7 +41,7 @@ abstract class AbstractUpdater implements UpdaterInterface
             $this->logger->debug("Nb lines inserted = " . $insertStmt->rowCount());
 
             $this->dbConnection->commit();
-        } catch(\Exception $e) { // FIXME: \Exception is far too much!
+        } catch(\PDOException $e) {
             $this->dbConnection->rollBack();
             throw new \RuntimeException("Exception occurred during update", 1, $e);
         }
