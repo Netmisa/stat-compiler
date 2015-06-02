@@ -2,14 +2,9 @@
 <container xmlns="http://symfony.com/schema/dic/services"
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
     xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
-    <parameters>
-        <parameter key="db.dsn" type="string">pgsql:host=kickass_yonath.docker;port=5432;dbname=statistics</parameter>
-        <parameter key="db.user" type="string">postgres</parameter>
-        <parameter key="db.password" type="string"></parameter>
-
-        <parameter key="logger.loglevel" type="constant">Monolog\Logger::DEBUG</parameter>
-        <parameter key="logger.file" type="string">php://stdout</parameter>
-    </parameters>
+    <imports>
+        <import resource="parameters.xml"/>
+    </imports>
 
     <services>
         <service id="log.stream_handler" class="Monolog\Handler\StreamHandler">
