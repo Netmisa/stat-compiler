@@ -58,8 +58,8 @@ FROM (
     WHERE
         type = 'public_transport'
         AND req.request_date >= (:start_date :: date)
-        AND req.request_date < (:end_date :: date) + interval '1 day';
-    UNION
+        AND req.request_date < (:end_date :: date) + interval '1 day'
+    UNION ALL
     SELECT
         journey_id,
         request_date,
@@ -75,7 +75,7 @@ FROM (
     WHERE
         type = 'public_transport'
         AND req.request_date >= (:start_date :: date)
-        AND req.request_date < (:end_date :: date) + interval '1 day';
+        AND req.request_date < (:end_date :: date) + interval '1 day'
 ) A,
 (
     SELECT DISTINCT dep.journey_id AS journey_id,
@@ -87,7 +87,10 @@ FROM (
               MIN(js.id) AS dep_id,
               MAX(js.id) AS arr_id
        FROM stat.journey_sections js
+       INNER JOIN stat.requests req ON req.id = js.request_id
        WHERE js.type = 'public_transport'
+        AND req.request_date >= (:start_date :: date)
+        AND req.request_date < (:end_date :: date) + interval '1 day'
        GROUP BY js.journey_id) od ON (dep.journey_id = od.journey_id
                                       AND dep.id = od.dep_id)
     INNER JOIN stat.journey_sections arr ON (od.journey_id = arr.journey_id
