@@ -1,0 +1,22 @@
+{
+    "name": "canaltp/stat-compiler",
+    "type": "project",
+    "require": {
+        "php": ">=5.4",
+        "symfony/yaml": "^2.7",
+        "symfony/console": "^2.7",
+        "monolog/monolog": "^1.13",
+        "doctrine/dbal": "~2.4.4",
+        "symfony/dependency-injection": "^2.7",
+        "symfony/config": "^2.7"
+    },
+    "authors": [
+        {
+            "name": "Vincent Lepot",
+            "email": "vincent.lepot@canaltp.fr"
+        }
+    ],
+    "autoload": {
+        "psr-0": { "CanalTP": "src/" }
+    }
+}

@@ -1,0 +1,25 @@
+#!/usr/bin/env php
+<?php
+if (PHP_SAPI !== 'cli') {
+    echo 'FATAL: Stat compiler should be invoked via the CLI version of PHP, not the '.PHP_SAPI.' SAPI'.PHP_EOL;
+    exit(1);
+}
+
+require dirname(__DIR__) . '/vendor/autoload.php';
+
+use Symfony\Component\Console\Application;
+
+use Symfony\Component\DependencyInjection\ContainerBuilder;
+use Symfony\Component\Config\FileLocator;
+use Symfony\Component\DependencyInjection\Loader\YamlFileLoader;
+use CanalTP\StatCompiler\DependencyInjection\UpdaterCompilerPass;
+
+$container = new ContainerBuilder();
+$container->addCompilerPass(new UpdaterCompilerPass());
+$loader = new YamlFileLoader($container, new FileLocator(dirname(__DIR__) . '/conf'));
+$loader->load('services.yml');
+$container->compile();
+
+$console = new Application();
+$console->add($container->get('updatedb_command'));
+$console->run();

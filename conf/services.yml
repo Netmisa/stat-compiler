@@ -1,0 +1,110 @@
+imports:
+    - { resource: parameters.yml }
+
+services:
+    log.stream_handler:
+        class: Monolog\Handler\StreamHandler
+        public: false
+        arguments:
+            - "%logger.file%"
+            - "%logger.loglevel%"
+
+    logger:
+        class: Monolog\Logger
+        arguments:
+            - "updatedb"
+        calls:
+            - [ 'pushHandler', [ @log.stream_handler ] ]
+
+    updatedb_command:
+        class: CanalTP\StatCompiler\Command\UpdateDbCommand
+        calls:
+            - [ 'setLogger', [ @logger ] ]
+
+    updaters.request_calls:
+        class: CanalTP\StatCompiler\Updater\RequestCallsUpdater
+        arguments:
+            - @dbconnection
+        calls:
+            - [ 'setLogger', [ @logger ] ]
+        tags:
+            -  { name: updatedb.updater }
+
+    updaters.error_stats:
+        class: CanalTP\StatCompiler\Updater\ErrorStatsUpdater
+        arguments:
+            - @dbconnection
+        calls:
+            - [ 'setLogger', [ @logger ] ]
+        tags:
+            -  { name: updatedb.updater }
+
+    updaters.journey_request_stats:
+        class: CanalTP\StatCompiler\Updater\JourneyRequestStatsUpdater
+        arguments:
+            - @dbconnection
+        calls:
+            - [ 'setLogger', [ @logger ] ]
+        tags:
+            -  { name: updatedb.updater }
+
+    updaters.journey_cities:
+        class: CanalTP\StatCompiler\Updater\JourneyCitiesUpdater
+        arguments:
+            - @dbconnection
+        calls:
+            - [ 'setLogger', [ @logger ] ]
+        tags:
+            -  { name: updatedb.updater }
+
+    updaters.journey_infos:
+        class: CanalTP\StatCompiler\Updater\JourneyInfosUpdater
+        arguments:
+            - @dbconnection
+        calls:
+            - [ 'setLogger', [ @logger ] ]
+        tags:
+            -  { name: updatedb.updater }
+
+    updaters.journey_lines:
+        class: CanalTP\StatCompiler\Updater\JourneyLinesUpdater
+        arguments:
+            - @dbconnection
+        calls:
+            - [ 'setLogger', [ @logger ] ]
+        tags:
+            -  { name: updatedb.updater }
+
+    updaters.journey_modes:
+        class: CanalTP\StatCompiler\Updater\JourneyModesUpdater
+        arguments:
+            - @dbconnection
+        calls:
+            - [ 'setLogger', [ @logger ] ]
+        tags:
+            -  { name: updatedb.updater }
+
+    updaters.journey_networks:
+        class: CanalTP\StatCompiler\Updater\JourneyNetworksUpdater
+        arguments:
+            - @dbconnection
+        calls:
+            - [ 'setLogger', [ @logger ] ]
+        tags:
+            -  { name: updatedb.updater }
+
+    updaters.journey_stop_areas:
+        class: CanalTP\StatCompiler\Updater\JourneyStopAreasUpdater
+        arguments:
+            - @dbconnection
+        calls:
+            - [ 'setLogger', [ @logger ] ]
+        tags:
+            -  { name: updatedb.updater }
+
+    dbconnection:
+        class: PDO
+        arguments:
+            - %db.dsn%
+            - %db.user%
+            - %db.password%
