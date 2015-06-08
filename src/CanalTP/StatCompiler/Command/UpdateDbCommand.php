@@ -34,8 +34,8 @@ class UpdateDbCommand extends Command
 
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        $startDate = \DateTime::createFromFormat('Y-m-d', $input->getArgument('start_date'));
-        $endDate = \DateTime::createFromFormat('Y-m-d', $input->getArgument('end_date'));
+        $startDate = \DateTime::createFromFormat('!Y-m-d', $input->getArgument('start_date'));
+        $endDate = \DateTime::createFromFormat('!Y-m-d', $input->getArgument('end_date'));
 
         if (false === $startDate) {
             throw new \RuntimeException('Wrong start date format (' . $input->getArgument('start_date') . ') expecting YYYY-MM-DD');

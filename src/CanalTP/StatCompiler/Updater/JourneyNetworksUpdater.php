@@ -24,13 +24,17 @@ INSERT INTO stat_compiled.journey_networks
   network_id,
   network_name,
   rank,
-  request_date
+  request_date,
+  is_start_network,
+  is_end_network
 )
 SELECT js.journey_id,
        js.network_id,
        js.network_name,
-       row_number() over (order by js.journey_id, js.id),
-       req.request_date
+       row_number() over (PARTITION BY js.journey_id ORDER BY js.journey_id, js.id) as rank,
+       req.request_date,
+       CASE WHEN row_number() over (PARTITION BY js.journey_id ORDER BY js.journey_id, js.id) = 1 THEN true ELSE false END as is_start_network,
+       CASE WHEN row_number() over (PARTITION BY js.journey_id ORDER BY js.journey_id, js.id) = count(1) over (PARTITION BY js.journey_id) THEN true ELSE false END as is_end_network
 FROM stat.journey_sections js
 INNER JOIN stat.requests req ON req.id = js.request_id
 WHERE network_id <> ''
