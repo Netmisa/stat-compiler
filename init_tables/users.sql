@@ -20,5 +20,4 @@ FROM (
         GROUP BY user_id, user_name
     ) B
 ) A
-ORDER BY user_id
 ;

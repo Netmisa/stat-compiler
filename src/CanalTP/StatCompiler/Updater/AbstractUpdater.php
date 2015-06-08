@@ -2,6 +2,7 @@
 namespace CanalTP\StatCompiler\Updater;
 
 use Psr\Log\LoggerAwareTrait;
+use Psr\Log\NullLogger;
 
 abstract class AbstractUpdater implements UpdaterInterface
 {
@@ -12,6 +13,7 @@ abstract class AbstractUpdater implements UpdaterInterface
     public function __construct(\PDO $dbConnection)
     {
         $this->dbConnection = $dbConnection;
+        $this->logger = new NullLogger();
     }
 
     protected abstract function getDeleteQuery();

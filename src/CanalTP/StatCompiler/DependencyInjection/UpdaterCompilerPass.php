@@ -5,6 +5,9 @@ use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
 use Symfony\Component\DependencyInjection\Reference;
 
+/**
+ * Compiler pass aiming to add all the updaters tagged in the DIC to the command
+ */
 class UpdaterCompilerPass implements CompilerPassInterface
 {
     public function process(ContainerBuilder $container)
