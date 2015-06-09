@@ -45,34 +45,6 @@ CREATE TRIGGER insert_journey_infos_trigger
     BEFORE INSERT ON stat_compiled.journey_infos
     FOR EACH ROW EXECUTE PROCEDURE journey_infos_insert_trigger();
 
-DROP TABLE IF EXISTS stat_compiled.journey_infos_y2014m06;
-DROP TABLE IF EXISTS stat_compiled.journey_infos_y2014m07;
-DROP TABLE IF EXISTS stat_compiled.journey_infos_y2014m08;
-DROP TABLE IF EXISTS stat_compiled.journey_infos_y2014m09;
-DROP TABLE IF EXISTS stat_compiled.journey_infos_y2014m10;
-DROP TABLE IF EXISTS stat_compiled.journey_infos_y2014m11;
-DROP TABLE IF EXISTS stat_compiled.journey_infos_y2014m12;
-DROP TABLE IF EXISTS stat_compiled.journey_infos_y2015m01;
-DROP TABLE IF EXISTS stat_compiled.journey_infos_y2015m02;
-DROP TABLE IF EXISTS stat_compiled.journey_infos_y2015m03;
-DROP TABLE IF EXISTS stat_compiled.journey_infos_y2015m04;
-DROP TABLE IF EXISTS stat_compiled.journey_infos_y2015m05;
-DROP TABLE IF EXISTS stat_compiled.journey_infos_y2015m06;
-
-CREATE TABLE stat_compiled.journey_infos_y2014m06 ( CHECK (request_date >= DATE '2014-06-01' AND request_date < DATE '2014-07-01') ) INHERITS (stat_compiled.journey_infos);
-CREATE TABLE stat_compiled.journey_infos_y2014m07 ( CHECK (request_date >= DATE '2014-07-01' AND request_date < DATE '2014-08-01') ) INHERITS (stat_compiled.journey_infos);
-CREATE TABLE stat_compiled.journey_infos_y2014m08 ( CHECK (request_date >= DATE '2014-08-01' AND request_date < DATE '2014-09-01') ) INHERITS (stat_compiled.journey_infos);
-CREATE TABLE stat_compiled.journey_infos_y2014m09 ( CHECK (request_date >= DATE '2014-09-01' AND request_date < DATE '2014-10-01') ) INHERITS (stat_compiled.journey_infos);
-CREATE TABLE stat_compiled.journey_infos_y2014m10 ( CHECK (request_date >= DATE '2014-10-01' AND request_date < DATE '2014-11-01') ) INHERITS (stat_compiled.journey_infos);
-CREATE TABLE stat_compiled.journey_infos_y2014m11 ( CHECK (request_date >= DATE '2014-11-01' AND request_date < DATE '2014-12-01') ) INHERITS (stat_compiled.journey_infos);
-CREATE TABLE stat_compiled.journey_infos_y2014m12 ( CHECK (request_date >= DATE '2014-12-01' AND request_date < DATE '2015-01-01') ) INHERITS (stat_compiled.journey_infos);
-CREATE TABLE stat_compiled.journey_infos_y2015m01 ( CHECK (request_date >= DATE '2015-01-01' AND request_date < DATE '2015-02-01') ) INHERITS (stat_compiled.journey_infos);
-CREATE TABLE stat_compiled.journey_infos_y2015m02 ( CHECK (request_date >= DATE '2015-02-01' AND request_date < DATE '2015-03-01') ) INHERITS (stat_compiled.journey_infos);
-CREATE TABLE stat_compiled.journey_infos_y2015m03 ( CHECK (request_date >= DATE '2015-03-01' AND request_date < DATE '2015-04-01') ) INHERITS (stat_compiled.journey_infos);
-CREATE TABLE stat_compiled.journey_infos_y2015m04 ( CHECK (request_date >= DATE '2015-04-01' AND request_date < DATE '2015-05-01') ) INHERITS (stat_compiled.journey_infos);
-CREATE TABLE stat_compiled.journey_infos_y2015m05 ( CHECK (request_date >= DATE '2015-05-01' AND request_date < DATE '2015-06-01') ) INHERITS (stat_compiled.journey_infos);
-CREATE TABLE stat_compiled.journey_infos_y2015m06 ( CHECK (request_date >= DATE '2015-06-01' AND request_date < DATE '2015-07-01') ) INHERITS (stat_compiled.journey_infos);
-
 INSERT INTO stat_compiled.journey_infos
 (
   id,
