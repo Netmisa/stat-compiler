@@ -41,4 +41,29 @@ EOT;
 
         return $insertQuery;
     }
+
+    protected function getInitQuery()
+    {
+        $initQuery = <<<EOT
+INSERT INTO stat_compiled.journey_modes
+(
+  journey_id,
+  type,
+  mode,
+  commercial_mode_id,
+  commercial_mode_name,
+  request_date
+)
+SELECT DISTINCT js.journey_id,
+                js.type,
+                js.mode,
+                js.commercial_mode_id,
+                js.commercial_mode_name,
+                req.request_date
+FROM stat.journey_sections js
+INNER JOIN stat.requests req ON req.id = js.request_id
+;
+EOT;
+        return $initQuery;
+    }
 }

@@ -52,4 +52,26 @@ class UsersUpdater implements UpdaterInterface
             throw new \RuntimeException("Exception occurred during update", 1, $e);
         }
     }
+
+    public function init()
+    {
+        $sqlToRun = array(
+            'TRUNCATE TABLE stat_compiled.users',
+            'INSERT INTO stat_compiled.users
+            (id, user_name)
+            SELECT DISTINCT user_id, user_name
+            FROM (
+                SELECT user_id, first_value(user_name) over (partition by user_id order by request_date DESC) as user_name
+                FROM (
+                    SELECT user_id, user_name, MIN(request_date) as request_date
+                    FROM stat.requests
+                    GROUP BY user_id, user_name
+                ) B
+            ) A',
+        );
+        foreach ($sqlToRun as $sql) {
+            $this->logger->debug('Query = ' . $sql);
+            $this->dbConnection->exec($sql);
+        }
+    }
 }

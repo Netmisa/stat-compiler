@@ -44,4 +44,31 @@ EOT;
 
         return $insertQuery;
     }
+
+    protected function getInitQuery()
+    {
+        $initQuery = <<<EOT
+INSERT INTO stat_compiled.journey_lines
+(
+  journey_id,
+  type,
+  line_id,
+  line_code,
+  network_id,
+  network_name,
+  request_date
+)
+SELECT DISTINCT journey_id,
+                type,
+                line_id,
+                line_code,
+                network_id,
+                network_name,
+                request_date
+FROM stat.journey_sections js
+INNER JOIN stat.requests req ON req.id = js.request_id
+WHERE line_id <> '' ;
+EOT;
+        return $initQuery;
+    }
 }

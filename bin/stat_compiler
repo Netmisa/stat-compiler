@@ -22,4 +22,5 @@ $container->compile();
 
 $console = new Application();
 $console->add($container->get('updatedb_command'));
+$console->add($container->get('initdb_command'));
 $console->run();

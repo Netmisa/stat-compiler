@@ -1,0 +1,4 @@
+name: Stat Compiler Doctrine Migrations
+table_name: doctrine_migration_versions
+migrations_namespace: DoctrineMigrations
+migrations_directory: DoctrineMigrations

@@ -18,6 +18,7 @@ abstract class AbstractUpdater implements UpdaterInterface
 
     protected abstract function getDeleteQuery();
     protected abstract function getInsertQuery();
+    protected abstract function getInitQuery();
 
     public function update(\DateTime $startDate, \DateTime $endDate)
     {
@@ -47,5 +48,18 @@ abstract class AbstractUpdater implements UpdaterInterface
             $this->dbConnection->rollBack();
             throw new \RuntimeException("Exception occurred during update", 1, $e);
         }
+    }
+
+    public function init()
+    {
+        $this->logger->info("Truncating table " . $this->getAffectedTable());
+        $truncateQuery = 'TRUNCATE TABLE ' . $this->getAffectedTable();
+        $this->logger->debug("Query = " . $truncateQuery);
+        $this->dbConnection->exec($truncateQuery);
+
+        $this->logger->info("Loading initial data into table " . $this->getAffectedTable());
+        $this->logger->debug("Query = " . $this->getInitQuery());
+        $this->dbConnection->exec($this->getInitQuery());
+        $this->logger->info("Initial data loaded into table " . $this->getAffectedTable());
     }
 }
