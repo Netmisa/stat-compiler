@@ -1,0 +1,10 @@
+<?php
+
+return array(
+    'driver'   => 'pdo_pgsql',
+    'host'     => 'localhost',
+    'user'     => 'navitia_stat',
+    'password' => 'thepassword',
+    'dbname'   => 'statistics',
+);
+
