@@ -53,7 +53,7 @@ abstract class AbstractUpdater implements UpdaterInterface
     public function init()
     {
         $this->logger->info("Truncating table " . $this->getAffectedTable());
-        $truncateQuery = 'TRUNCATE TABLE ' . $this->getAffectedTable();
+        $truncateQuery = 'TRUNCATE TABLE stat_compiled.' . $this->getAffectedTable();
         $this->logger->debug("Query = " . $truncateQuery);
         $this->dbConnection->exec($truncateQuery);
 
