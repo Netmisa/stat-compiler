@@ -40,8 +40,8 @@ SELECT DISTINCT
     A.city_insee,
     A.department_code,
     A.request_date,
-    CASE WHEN A.stop_area_id=B.dep_stop_area_id THEN TRUE ELSE FALSE END AS is_start_stop_area,
-    CASE WHEN A.stop_area_id=B.arr_stop_area_id THEN TRUE ELSE FALSE END AS is_end_stop_area
+    CASE WHEN A.stop_area_id=B.dep_stop_area_id AND A.city_id=B.dep_city_id THEN TRUE ELSE FALSE END AS is_start_stop_area,
+    CASE WHEN A.stop_area_id=B.arr_stop_area_id AND A.city_id=B.arr_city_id THEN TRUE ELSE FALSE END AS is_end_stop_area
 FROM (
     SELECT
         journey_id,
@@ -80,7 +80,9 @@ FROM (
 (
     SELECT DISTINCT dep.journey_id AS journey_id,
                     dep.from_id AS dep_stop_area_id,
-                    arr.to_id AS arr_stop_area_id
+                    dep.from_admin_id AS dep_city_id,
+                    arr.to_id AS arr_stop_area_id,
+                    arr.to_admin_id AS arr_city_id
     FROM stat.journey_sections dep
     INNER JOIN
       (SELECT js.journey_id,
@@ -127,8 +129,8 @@ SELECT DISTINCT
     A.city_insee,
     A.department_code,
     A.request_date,
-    CASE WHEN A.stop_area_id=B.dep_stop_area_id THEN TRUE ELSE FALSE END AS is_start_stop_area,
-    CASE WHEN A.stop_area_id=B.arr_stop_area_id THEN TRUE ELSE FALSE END AS is_end_stop_area
+    CASE WHEN A.stop_area_id=B.dep_stop_area_id AND A.city_id=B.dep_city_id THEN TRUE ELSE FALSE END AS is_start_stop_area,
+    CASE WHEN A.stop_area_id=B.arr_stop_area_id AND A.city_id=B.arr_city_id THEN TRUE ELSE FALSE END AS is_end_stop_area
 FROM (
     SELECT
         journey_id,
@@ -163,7 +165,9 @@ FROM (
 (
     SELECT DISTINCT dep.journey_id AS journey_id,
                     dep.from_id AS dep_stop_area_id,
-                    arr.to_id AS arr_stop_area_id
+                    dep.from_admin_id AS dep_city_id,
+                    arr.to_id AS arr_stop_area_id,
+                    arr.to_admin_id AS arr_city_id
     FROM stat.journey_sections dep
     INNER JOIN
       (SELECT js.journey_id,
