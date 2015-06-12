@@ -24,7 +24,7 @@ class Version20150609161952 extends AbstractMigration
               commercial_mode_id text NOT NULL,
               commercial_mode_name text,
               request_date timestamp without time zone,
-              CONSTRAINT journey_modes_pkey PRIMARY KEY (journey_id, type, mode, commercial_mode_id)
+              CONSTRAINT journey_modes_pkey PRIMARY KEY (journey_id, type, mode, commercial_mode_id, commercial_mode_name)
             )
             WITH (
               OIDS=FALSE
@@ -43,7 +43,7 @@ class Version20150609161952 extends AbstractMigration
               IF NOT EXISTS(SELECT 1 FROM pg_tables WHERE tablename=partition and schemaname=schema) THEN
                 RAISE NOTICE \'A partition has been created %\',partition;
                 EXECUTE \'CREATE TABLE IF NOT EXISTS \' || schema || \'.\' || partition || 
-                        \' (CONSTRAINT \' || partition || \'_pkey PRIMARY KEY (journey_id, type, mode, commercial_mode_id),
+                        \' (CONSTRAINT \' || partition || \'_pkey PRIMARY KEY (journey_id, type, mode, commercial_mode_id, commercial_mode_name),
                           check (request_date >= DATE \'\'\' || to_char(NEW.request_date, \'YYYY-MM-01\') || \'\'\' 
                                   AND request_date < DATE \'\'\' || to_char(NEW.request_date + interval \'1 month\', \'YYYY-MM-01\') || \'\'\') ) \' || 
                         \'INHERITS (\' || schema || \'.journey_modes);\';
