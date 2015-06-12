@@ -45,7 +45,8 @@ class Version20150609162930 extends AbstractMigration
               IF NOT EXISTS(SELECT 1 FROM pg_tables WHERE tablename=partition and schemaname=schema) THEN
                 RAISE NOTICE \'A partition has been created %\',partition;
                 EXECUTE \'CREATE TABLE IF NOT EXISTS \' || schema || \'.\' || partition || 
-                        \' (check (request_date >= DATE \'\'\' || to_char(NEW.request_date, \'YYYY-MM-01\') || \'\'\' 
+                        \' (CONSTRAINT \' || partition || \'_pkey PRIMARY KEY (region_id, api, request_date, user_id, app_name),
+                          check (request_date >= DATE \'\'\' || to_char(NEW.request_date, \'YYYY-MM-01\') || \'\'\' 
                                   AND request_date < DATE \'\'\' || to_char(NEW.request_date + interval \'1 month\', \'YYYY-MM-01\') || \'\'\') ) \' || 
                         \'INHERITS (\' || schema || \'.requests_calls);\';
               END IF;

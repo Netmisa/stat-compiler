@@ -28,7 +28,7 @@ class Version20150609162719 extends AbstractMigration
               request_date timestamp without time zone,
               is_start_stop_area boolean,
               is_end_stop_area boolean,
-              CONSTRAINT journey_stop_areas_pkey PRIMARY KEY (journey_id, stop_area_id)
+              CONSTRAINT journey_stop_areas_pkey PRIMARY KEY (journey_id, stop_area_id, city_id)
             )
             WITH (
               OIDS=FALSE
@@ -47,7 +47,8 @@ class Version20150609162719 extends AbstractMigration
               IF NOT EXISTS(SELECT 1 FROM pg_tables WHERE tablename=partition and schemaname=schema) THEN
                 RAISE NOTICE \'A partition has been created %\',partition;
                 EXECUTE \'CREATE TABLE IF NOT EXISTS \' || schema || \'.\' || partition || 
-                        \' (check (request_date >= DATE \'\'\' || to_char(NEW.request_date, \'YYYY-MM-01\') || \'\'\' 
+                        \' (CONSTRAINT \' || partition || \'_pkey PRIMARY KEY (journey_id, stop_area_id, city_id),
+                          check (request_date >= DATE \'\'\' || to_char(NEW.request_date, \'YYYY-MM-01\') || \'\'\' 
                                   AND request_date < DATE \'\'\' || to_char(NEW.request_date + interval \'1 month\', \'YYYY-MM-01\') || \'\'\') ) \' || 
                         \'INHERITS (\' || schema || \'.journey_stop_areas);\';
               END IF;
