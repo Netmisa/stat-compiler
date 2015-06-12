@@ -27,8 +27,18 @@ class UpdateDbCommand extends Command
         $this
             ->setName('updatedb')
             ->setDescription('Update compiled stat tables')
-            ->addArgument('start_date', InputArgument::REQUIRED, 'Consolidation start date (YYYY-MM-DD)')
-            ->addArgument('end_date', InputArgument::REQUIRED, 'Consolidation end date (YYYY-MM-DD)')
+            ->addArgument(
+                'start_date',
+                InputArgument::OPTIONAL,
+                'Consolidation start date (YYYY-MM-DD). Defaults to yesterday.',
+                date('Y-m-d', time() - 24 * 3600)
+            )
+            ->addArgument(
+                'end_date',
+                InputArgument::OPTIONAL,
+                'Consolidation end date (YYYY-MM-DD). Defaults to yesterday.',
+                date('Y-m-d', time() - 24 * 3600)
+            )
         ;
     }
 
@@ -43,6 +53,10 @@ class UpdateDbCommand extends Command
 
         if (false === $endDate) {
             throw new \RuntimeException('Wrong end date format (' . $input->getArgument('end_date') . ') expecting YYYY-MM-DD');
+        }
+
+        if ($startDate > $endDate) {
+            throw new \RuntimeException('Start date (' . $input->getArgument('start_date') . ') must be before end date (' . $input->getArgument('end_date') . ')');
         }
 
         $this->logger->info('Starting update', array('start_date' => $startDate, 'end_date' => $endDate));
