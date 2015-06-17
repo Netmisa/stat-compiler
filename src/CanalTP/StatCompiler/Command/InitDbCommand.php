@@ -34,7 +34,7 @@ class InitDbCommand extends Command
     {
         $this->logger->info('Starting init');
         foreach ($this->updaters as $upd) {
-            $output->writeln("Launching " . get_class($upd));
+            $this->logger->info("Launching " . get_class($upd));
             $upd->init();
         }
         $this->logger->info('Init ended');

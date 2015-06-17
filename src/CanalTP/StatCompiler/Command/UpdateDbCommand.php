@@ -61,7 +61,7 @@ class UpdateDbCommand extends Command
 
         $this->logger->info('Starting update', array('start_date' => $startDate, 'end_date' => $endDate));
         foreach ($this->updaters as $upd) {
-            $output->writeln("Launching " . get_class($upd));
+            $this->logger->info("Launching " . get_class($upd));
             $upd->update($startDate, $endDate);
         }
         $this->logger->info('Update ended');
