@@ -1,3 +1,5 @@
 /vendor/
 /conf/parameters.xml
 /conf/migrations/migrations-db.php
+/nbproject/private/
+nbproject/
