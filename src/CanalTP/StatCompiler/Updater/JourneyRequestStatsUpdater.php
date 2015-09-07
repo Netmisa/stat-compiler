@@ -33,7 +33,11 @@ INSERT INTO stat_compiled.journey_request_stats
   arrival_admin_name,
   arrival_department_code,
   region_id,
-  is_internal_call
+  is_internal_call,
+  from_id,
+  from_type,
+  to_id,
+  to_type
 )
 SELECT DISTINCT jr.request_id,
                 jr.requested_date_time,
@@ -48,10 +52,16 @@ SELECT DISTINCT jr.request_id,
                 jr.arrival_admin_name,
                 substring(arrival_insee, 1, 2) as arrival_department_code,
                 first_value(cov.region_id) OVER (PARTITION BY jr.request_id) AS region_id,
-                CASE WHEN req.user_name LIKE '%canaltp%' THEN 1 ELSE 0 END as is_internal_call
+                CASE WHEN req.user_name LIKE '%canaltp%' THEN 1 ELSE 0 END as is_internal_call,
+                from_param.param_value as from_id,
+                CASE WHEN from_param.param_value LIKE '%:%' THEN substring(from_param.param_value from '^([^\:]*):') ELSE 'address' END as from_type,
+                to_param.param_value as to_id,
+                CASE WHEN to_param.param_value LIKE '%:%' THEN substring(to_param.param_value from '^([^\:]*):') ELSE 'address' END as to_type
 FROM stat.journey_request jr
 INNER JOIN stat.requests req ON req.id=jr.request_id
 INNER JOIN stat.coverages cov ON req.id=cov.request_id
+LEFT JOIN stat.parameters from_param ON req.id=from_param.request_id AND from_param.param_key='from'
+LEFT JOIN stat.parameters to_param ON req.id=to_param.request_id AND to_param.param_key='to'
 WHERE
 req.request_date >= (:start_date :: date)
 AND req.request_date < (:end_date :: date) + interval '1 day';
@@ -78,7 +88,11 @@ INSERT INTO stat_compiled.journey_request_stats
   arrival_admin_name,
   arrival_department_code,
   region_id,
-  is_internal_call
+  is_internal_call,
+  from_id,
+  from_type,
+  to_id,
+  to_type
 )
 SELECT DISTINCT jr.request_id,
                 jr.requested_date_time,
@@ -93,10 +107,16 @@ SELECT DISTINCT jr.request_id,
                 jr.arrival_admin_name,
                 substring(arrival_insee, 1, 2) as arrival_department_code,
                 first_value(cov.region_id) OVER (PARTITION BY jr.request_id) AS region_id,
-                CASE WHEN req.user_name LIKE '%canaltp%' THEN 1 ELSE 0 END as is_internal_call
+                CASE WHEN req.user_name LIKE '%canaltp%' THEN 1 ELSE 0 END as is_internal_call,
+                from_param.param_value as from_id,
+                CASE WHEN from_param.param_value LIKE '%:%' THEN substring(from_param.param_value from '^([^\:]*):') ELSE 'address' END as from_type,
+                to_param.param_value as to_id,
+                CASE WHEN to_param.param_value LIKE '%:%' THEN substring(to_param.param_value from '^([^\:]*):') ELSE 'address' END as to_type
 FROM stat.journey_request jr
 INNER JOIN stat.requests req ON req.id=jr.request_id
-INNER JOIN stat.coverages cov ON req.id=cov.request_id;
+INNER JOIN stat.coverages cov ON req.id=cov.request_id
+LEFT JOIN stat.parameters from_param ON req.id=from_param.request_id AND from_param.param_key='from'
+LEFT JOIN stat.parameters to_param ON req.id=to_param.request_id AND to_param.param_key='to';
 EOT;
         return $initQuery;
     }
