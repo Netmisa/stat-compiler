@@ -5,6 +5,7 @@ use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Input\InputArgument;
+use Symfony\Component\Console\Input\InputOption;
 
 use CanalTP\StatCompiler\Updater\UpdaterInterface;
 use CanalTP\StatCompiler\Updater\ErrorStatsUpdater;
@@ -20,7 +21,6 @@ class UpdateDbCommand extends Command
     use LoggerAwareTrait;
 
     private $updaters = array();
-    private $dbConnection;
 
     protected function configure()
     {
@@ -39,7 +39,14 @@ class UpdateDbCommand extends Command
                 'Consolidation end date (YYYY-MM-DD). Defaults to yesterday.',
                 date('Y-m-d', time() - 24 * 3600)
             )
-        ;
+            ->addOption(
+                'only-update',
+                null,
+                InputOption::VALUE_REQUIRED,
+                'Limit update to given tables',
+                ''
+            );
+            
     }
 
     protected function execute(InputInterface $input, OutputInterface $output)
@@ -60,9 +67,16 @@ class UpdateDbCommand extends Command
         }
 
         $this->logger->info('Starting update', array('start_date' => $startDate, 'end_date' => $endDate));
+        $tables = array();
+        if('' !== $input->getOption('only-update')){
+            $tables = explode(',', $input->getOption('only-update'));
+        } 
+        
         foreach ($this->updaters as $upd) {
-            $this->logger->info("Launching " . get_class($upd));
-            $upd->update($startDate, $endDate);
+            if(empty($tables) || in_array($upd->getAffectedTable(), $tables)){
+                $this->logger->info("Launching " . get_class($upd));
+                $upd->update($startDate, $endDate);
+            }
         }
         $this->logger->info('Update ended');
     }
