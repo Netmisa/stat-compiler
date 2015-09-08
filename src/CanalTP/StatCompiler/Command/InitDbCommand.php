@@ -41,12 +41,12 @@ class InitDbCommand extends Command
         $this->logger->info('Starting init');
 
         $tables = array();
-        if('' !== $input->getOption('only-update')){
+        if ('' !== $input->getOption('only-update')) {
             $tables = explode(',', $input->getOption('only-update'));
         }
 
         foreach ($this->updaters as $upd) {
-            if(empty($tables) || in_array($upd->getAffectedTable(), $tables)){
+            if (empty($tables) || in_array($upd->getAffectedTable(), $tables)) {
                 $this->logger->info("Launching " . get_class($upd));
                 $upd->init();
             }
