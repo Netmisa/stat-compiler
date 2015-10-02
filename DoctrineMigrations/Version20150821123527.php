@@ -15,7 +15,7 @@ class Version20150821123527 extends AbstractMigration
      */
     public function up(Schema $schema)
     {
-        $this->addSql('ALTER TABLE stat_compiled.requests_calls ADD host text;');
+        $this->addSql('ALTER TABLE stat_compiled.requests_calls ADD host text NOT NULL DEFAULT \'\';');
     }
 
     /**
