@@ -17,9 +17,10 @@ class Version20151001113046 extends AbstractMigration
     {
         // Update Primary key on requests_calls table (host added)
         $this->addSql('
-          CREATE UNIQUE INDEX CONCURRENTLY add_host_id_temp_idx ON requests_calls (region_id, api, request_date, user_id, app_name, host);
-          ALTER TABLE requests_calls DROP CONSTRAINT requests_calls_pkey,
-            ADD CONSTRAINT requests_calls_pkey PRIMARY KEY USING INDEX add_host_id_temp_idx;
+          CREATE UNIQUE INDEX add_host_id_temp_idx ON stat_compiled.requests_calls (region_id, api, request_date, user_id, app_name, host);
+        ');
+        $this->addSql('
+          ALTER TABLE stat_compiled.requests_calls DROP CONSTRAINT requests_calls_pkey, ADD CONSTRAINT requests_calls_pkey PRIMARY KEY USING INDEX add_host_id_temp_idx;
         ');
 
         // New version of the partition auto-creation for requests_calls
@@ -46,19 +47,6 @@ class Version20151001113046 extends AbstractMigration
               $$
             LANGUAGE plpgsql;
         ');
-
-        // Add index on all existing partitions of requests_calls
-        $this->addSql('
-            DO $$DECLARE
-              requests_calls_partitions CURSOR FOR SELECT tablename FROM pg_tables WHERE tablename like \'requests_calls_%\' and schemaname=\'stat_compiled\' ORDER BY tablename;
-            BEGIN
-              RAISE NOTICE \'Starting ...\';
-              FOR partition IN requests_calls_partitions LOOP
-                RAISE NOTICE \'Partition: %s ...\', quote_ident(partition.tablename);
-                EXECUTE \'CREATE INDEX \' || partition.tablename || \'_region_id_idx ON stat_compiled.\' || partition.tablename || \' (region_id);\';
-              END LOOP;
-            END$$;
-        ');
     }
 
     /**
@@ -68,9 +56,10 @@ class Version20151001113046 extends AbstractMigration
     {
         // Update Primary key on requests_calls table (host added)
         $this->addSql('
-          CREATE UNIQUE INDEX CONCURRENTLY remove_host_id_temp_idx ON requests_calls (region_id, api, request_date, user_id, app_name);
-          ALTER TABLE requests_calls DROP CONSTRAINT requests_calls_pkey,
-            ADD CONSTRAINT requests_calls_pkey PRIMARY KEY USING INDEX remove_host_id_temp_idx;
+          CREATE UNIQUE INDEX remove_host_id_temp_idx ON stat_compiled.requests_calls (region_id, api, request_date, user_id, app_name);
+        ');
+        $this->addSql('
+          ALTER TABLE stat_compiled.requests_calls DROP CONSTRAINT requests_calls_pkey, ADD CONSTRAINT requests_calls_pkey PRIMARY KEY USING INDEX remove_host_id_temp_idx;
         ');
 
         // New version of the partition auto-creation for requests_calls
@@ -96,19 +85,6 @@ class Version20151001113046 extends AbstractMigration
               END;
               $$
             LANGUAGE plpgsql;
-        ');
-
-        // Add index on all existing partitions of requests_calls
-        $this->addSql('
-            DO $$DECLARE
-              requests_calls_partitions CURSOR FOR SELECT tablename FROM pg_tables WHERE tablename like \'requests_calls_%\' and schemaname=\'stat_compiled\' ORDER BY tablename;
-            BEGIN
-              RAISE NOTICE \'Starting ...\';
-              FOR partition IN requests_calls_partitions LOOP
-                RAISE NOTICE \'Partition: %s ...\', quote_ident(partition.tablename);
-                EXECUTE \'CREATE INDEX \' || partition.tablename || \'_region_id_idx ON stat_compiled.\' || partition.tablename || \' (region_id);\';
-              END LOOP;
-            END$$;
         ');
     }
 }
