@@ -47,6 +47,19 @@ class Version20151001113046 extends AbstractMigration
               $$
             LANGUAGE plpgsql;
         ');
+
+        // Update pkey on all existing partitions of requests_calls
+        $this->addSql('
+            DO $$DECLARE
+              requests_calls_partitions CURSOR FOR SELECT tablename FROM pg_tables WHERE tablename like \'requests_calls_%\' and schemaname=\'stat_compiled\' ORDER BY tablename;
+            BEGIN
+              RAISE NOTICE \'Starting ...\';
+              FOR partition IN requests_calls_partitions LOOP
+                RAISE NOTICE \'Partition: %s ...\', quote_ident(partition.tablename);
+                EXECUTE \'ALTER TABLE stat_compiled.\' || partition.tablename || \' CONSTRAINT \' || partition.tablename || \'_pkey PRIMARY KEY (region_id, api, request_date, user_id, app_name, host);\';
+              END LOOP;
+            END$$;
+        ');
     }
 
     /**
@@ -85,6 +98,19 @@ class Version20151001113046 extends AbstractMigration
               END;
               $$
             LANGUAGE plpgsql;
+        ');
+
+        // Update pkey on all existing partitions of requests_calls
+        $this->addSql('
+            DO $$DECLARE
+              requests_calls_partitions CURSOR FOR SELECT tablename FROM pg_tables WHERE tablename like \'requests_calls_%\' and schemaname=\'stat_compiled\' ORDER BY tablename;
+            BEGIN
+              RAISE NOTICE \'Starting ...\';
+              FOR partition IN requests_calls_partitions LOOP
+                RAISE NOTICE \'Partition: %s ...\', quote_ident(partition.tablename);
+                EXECUTE \'ALTER TABLE stat_compiled.\' || partition.tablename || \' CONSTRAINT \' || partition.tablename || \'_pkey PRIMARY KEY (region_id, api, request_date, user_id, app_name);\';
+              END LOOP;
+            END$$;
         ');
     }
 }
