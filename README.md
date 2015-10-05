@@ -14,15 +14,6 @@ Requirements
 - Composer (https://getcomposer.org/download/)
 
 
-Platforms
------------
-
-- [Stat-Compiler (Dev platform)](#)
-- [Stat-Compiler (Internal platform)](#)
-- [Stat-Compiler (Customer platform)](#)
-- [Stat-Compiler (Production platform)](#)
-
-
 Installation
 -------------
 
@@ -49,14 +40,14 @@ The following command is used to update the database:
 
 Example use cases:
 
-1/ '*I want to update the data on a specific period. Example: from 2015-10-01 to 2015-11-01*'
+1/ I want to update the data on a specific period. Example: from 2015-10-01 to 2015-11-01.
 
 > bin/stat_compiler updatedb 2015-10-01 2015-11-01
 
 - start_date: Consolidation start date (YYYY-MM-DD). Defaults to yesterday.
 - end_date: Consolidation end date (YYYY-MM-DD). Defaults to yesterday.
 
-2/ *Based on the above example, I want to update only the table requests_calls. *
+2/ Based on the above example, I want to update only the table requests_calls.
 
 > bin/stat_compiler updatedb 2015-10-01 2015-11-01 --only-update=resquests_calls
 
