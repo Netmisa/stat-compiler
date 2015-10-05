@@ -28,15 +28,15 @@ Installation
 
 ### 1. Clone the repository
 
-- git clone git@github.com:CanalTP/stat-compiler.git
+    git clone git@github.com:CanalTP/stat-compiler.git
 
 ### 2. Initializing with Composer
 
-- composer.phar install
+    composer.phar install
 
 ### 3. Create in conf/ folder your own config files based on *.dist ones:
 
-- parameters.xml
+    parameters.xml
 
 
 How to update database
@@ -44,7 +44,7 @@ How to update database
 
 The following command is used to update the database:
 
-- bin/stat_compiler updatedb
+    bin/stat_compiler updatedb
 
 
 Example use cases:
