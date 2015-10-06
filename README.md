@@ -33,7 +33,7 @@ Installation
 How to update database
 -----------------------
 
-The following command is used to update the database:
+The following command is used to update the database (only for the day before):
 
 > bin/stat_compiler updatedb
 
