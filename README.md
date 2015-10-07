@@ -60,3 +60,6 @@ Contributing
 -------------
 
 1. Vincent Lepot - vincent.lepot@canaltp.fr
+2. Rémy Abi Khalil - remy.abi-khalil@canaltp.fr
+3. David Quintanel - david.quintanel@canaltp.fr
+4. Kun Liang - kun.liang@canaltp.fr
