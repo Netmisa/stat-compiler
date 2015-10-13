@@ -63,7 +63,7 @@ INSERT INTO stat_compiled.coverage_modes
   is_internal_call,
   nb
 )
-SELECT req.request_date::date AS request_date,
+SELECT req.request_date::date,
        cov.region_id,
        js.type,
        js.mode,
@@ -74,7 +74,7 @@ SELECT req.request_date::date AS request_date,
 FROM stat.journey_sections js
 INNER JOIN stat.requests req ON req.id = js.request_id
 INNER JOIN stat.coverages cov ON cov.request_id = req.id
-GROUP BY request_date, cov.region_id, js.type, js.mode, js.commercial_mode_id, js.commercial_mode_name, is_internal_call
+GROUP BY req.request_date::date, cov.region_id, js.type, js.mode, js.commercial_mode_id, js.commercial_mode_name, is_internal_call
 ;
 EOT;
         return $initQuery;
