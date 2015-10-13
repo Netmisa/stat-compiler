@@ -29,7 +29,7 @@ INSERT INTO stat_compiled.coverage_modes
   is_internal_call,
   nb
 )
-SELECT req.request_date::date AS request_date,
+SELECT req.request_date::date,
        cov.region_id,
        js.type,
        js.mode,
@@ -42,7 +42,7 @@ INNER JOIN stat.requests req ON req.id = js.request_id
 INNER JOIN stat.coverages cov ON cov.request_id = req.id
 WHERE req.request_date >= (:start_date :: date)
 AND req.request_date < (:end_date :: date) + interval '1 day'
-GROUP BY request_date, cov.region_id, js.type, js.mode, js.commercial_mode_id, js.commercial_mode_name, is_internal_call
+GROUP BY req.request_date::date, cov.region_id, js.type, js.mode, js.commercial_mode_id, js.commercial_mode_name, is_internal_call
 ;
 EOT;
 
