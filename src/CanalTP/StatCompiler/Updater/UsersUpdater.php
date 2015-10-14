@@ -47,6 +47,7 @@ class UsersUpdater implements UpdaterInterface
             $this->dbConnection->exec('INSERT INTO stat_compiled.users (id, user_name) SELECT id, user_name FROM tmp_users');
 
             $this->dbConnection->exec('DROP TABLE tmp_users');
+            $this->dbConnection->commit();
         } catch(\PDOException $e) {
             $this->dbConnection->rollBack();
             throw new \RuntimeException("Exception occurred during update", 1, $e);
