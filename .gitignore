@@ -2,3 +2,4 @@
 /conf/parameters.xml
 /conf/migrations/migrations-db.php
 nbproject
+/.idea
