@@ -141,5 +141,14 @@
             <tag name="initdb.updater" />
         </service>
 
+        <service id="updaters.coverage_journeys" class="CanalTP\StatCompiler\Updater\CoverageJourneysUpdater">
+            <argument type="service" id="dbconnection" />
+            <call method="setLogger">
+                <argument type="service" id="logger" />
+            </call>
+            <tag name="updatedb.updater" />
+            <tag name="initdb.updater" />
+        </service>
+
     </services>
 </container>
