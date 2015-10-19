@@ -59,7 +59,7 @@ class Version20151016110501 extends AbstractMigration
                 FOR EACH ROW EXECUTE PROCEDURE coverage_journeys_insert_trigger();
         ');
 
-        $this->addSql('grant select on stat_compiled.coverage_modes to usrsql_nmp_stat;');
+        $this->addSql('grant select on stat_compiled.coverage_journeys to usrsql_nmp_stat;');
     }
 
     /**
