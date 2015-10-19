@@ -6,15 +6,11 @@ use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputOption;
+use Symfony\Component\Console\Question\ConfirmationQuestion;
 
 use CanalTP\StatCompiler\Updater\UpdaterInterface;
-use CanalTP\StatCompiler\Updater\ErrorStatsUpdater;
-use CanalTP\StatCompiler\Updater\RequestCallsUpdater;
 
 use Psr\Log\LoggerAwareTrait;
-
-use Monolog\Logger;
-use Monolog\Handler\StreamHandler;
 
 class InitDbCommand extends Command
 {
@@ -38,6 +34,13 @@ class InitDbCommand extends Command
 
     protected function execute(InputInterface $input, OutputInterface $output)
     {
+        // Ask confirmation before proceed, because once table is truncated, no rollback is possible
+        $helper = $this->getHelper('question');
+        $question = new ConfirmationQuestion('<question>CAUTION! This will cause tables truncation. Continue with this action?</question>', false);
+        if (!$helper->ask($input, $output, $question)) {
+            return;
+        }
+
         $this->logger->info('Starting init');
 
         $tables = array();
