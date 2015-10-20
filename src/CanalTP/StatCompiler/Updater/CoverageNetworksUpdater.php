@@ -36,7 +36,8 @@ SELECT req.request_date::date,
 FROM stat.journey_sections js
 INNER JOIN stat.requests req ON req.id = js.request_id
 INNER JOIN stat.coverages cov ON cov.request_id = req.id
-WHERE req.request_date >= (:start_date :: date)
+WHERE network_id <> ''
+AND req.request_date >= (:start_date :: date)
 AND req.request_date < (:end_date :: date) + interval '1 day'
 GROUP BY req.request_date::date, cov.region_id, js.network_id, js.network_name, is_internal_call
 ;
