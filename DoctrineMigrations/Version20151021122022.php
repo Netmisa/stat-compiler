@@ -18,7 +18,7 @@ class Version20151021122022 extends AbstractMigration
         // Add end_point_id column from stat_compiled.requests_calls table
         $this->addSql('ALTER TABLE stat_compiled.requests_calls ADD end_point_id integer;');
 
-        // Update Primary key on requests_calls table (host removed)
+        // Update Primary key on requests_calls table (end_point_id added)
         $this->addSql('CREATE UNIQUE INDEX add_end_point_id_temp_idx ON stat_compiled.requests_calls (region_id, api, request_date, user_id, app_name, host, end_point_id);');
         $this->addSql('ALTER TABLE stat_compiled.requests_calls DROP CONSTRAINT requests_calls_pkey, ADD CONSTRAINT requests_calls_pkey PRIMARY KEY USING INDEX add_end_point_id_temp_idx;');
 
@@ -67,10 +67,7 @@ class Version20151021122022 extends AbstractMigration
      */
     public function down(Schema $schema)
     {
-        // Remove end_point_id column from stat_compiled.requests_calls table
-        $this->addSql('ALTER TABLE stat_compiled.requests_calls DROP COLUMN end_point_id;');
-
-        // Update Primary key on requests_calls table (host added)
+        // Update Primary key on requests_calls table (end_point_id removed)
         $this->addSql('CREATE UNIQUE INDEX remove_end_point_id_temp_idx ON stat_compiled.requests_calls (region_id, api, request_date, user_id, app_name, host);');
         $this->addSql('ALTER TABLE stat_compiled.requests_calls DROP CONSTRAINT requests_calls_pkey, ADD CONSTRAINT requests_calls_pkey PRIMARY KEY USING INDEX remove_end_point_id_temp_idx;');
 
@@ -112,5 +109,8 @@ class Version20151021122022 extends AbstractMigration
               END LOOP;
             END$$;
         ');
+
+        // Remove end_point_id column from stat_compiled.requests_calls table
+        $this->addSql('ALTER TABLE stat_compiled.requests_calls DROP COLUMN end_point_id;');
     }
 }
