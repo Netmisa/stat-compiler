@@ -16,7 +16,7 @@ class Version20151021122022 extends AbstractMigration
     public function up(Schema $schema)
     {
         // Add end_point_id column from stat_compiled.requests_calls table
-        $this->addSql('ALTER TABLE stat_compiled.requests_calls ADD end_point_id integer;');
+        $this->addSql('ALTER TABLE stat_compiled.requests_calls ADD end_point_id integer DEFAULT 0;');
 
         // Update Primary key on requests_calls table (end_point_id added)
         $this->addSql('CREATE UNIQUE INDEX add_end_point_id_temp_idx ON stat_compiled.requests_calls (region_id, api, request_date, user_id, app_name, host, end_point_id);');
