@@ -18,7 +18,7 @@ class RequestCallsUpdater extends AbstractUpdater
         $insertQuery = <<<EOT
 INSERT INTO stat_compiled.requests_calls
 (
-  host,
+  end_point_id,
   region_id,
   api,
   user_id,
@@ -29,7 +29,7 @@ INSERT INTO stat_compiled.requests_calls
   nb_without_journey
 )
 SELECT
-    host,
+    end_point_id,
     cov.region_id,
     req.api,
     user_id,
@@ -46,7 +46,7 @@ WHERE
     req.request_date >= (:start_date :: date)
     AND req.request_date < (:end_date :: date) + interval '1 day'
 GROUP BY
-    host,
+    end_point_id,
     cov.region_id,
     req.api,
     user_id,
@@ -64,7 +64,7 @@ EOT;
         $initQuery = <<<EOT
 INSERT INTO stat_compiled.requests_calls
 (
-  host,
+  end_point_id,
   region_id,
   api,
   user_id,
@@ -75,7 +75,7 @@ INSERT INTO stat_compiled.requests_calls
   nb_without_journey
 )
 SELECT
-    host,
+    end_point_id,
     cov.region_id,
     req.api,
     user_id,
@@ -89,7 +89,7 @@ FROM
     INNER JOIN stat.coverages cov ON cov.request_id=req.id
     LEFT JOIN stat.journeys j ON j.request_id=req.id
 GROUP BY
-    host,
+    end_point_id,
     cov.region_id,
     req.api,
     user_id,
