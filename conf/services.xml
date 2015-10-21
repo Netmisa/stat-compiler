@@ -159,5 +159,14 @@
             <tag name="initdb.updater" />
         </service>
 
+        <service id="updaters.coverage_stop_areas" class="CanalTP\StatCompiler\Updater\CoverageStopAreasUpdater">
+            <argument type="service" id="dbconnection" />
+            <call method="setLogger">
+                <argument type="service" id="logger" />
+            </call>
+            <tag name="updatedb.updater" />
+            <tag name="initdb.updater" />
+        </service>
+
     </services>
 </container>
