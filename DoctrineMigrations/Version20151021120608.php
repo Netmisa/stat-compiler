@@ -27,8 +27,7 @@ class Version20151021120608 extends AbstractMigration
               city_insee text,
               department_code text,
               is_internal_call integer,
-              nb integer,
-              CONSTRAINT coverage_stop_areas_pkey PRIMARY KEY (request_date, region_id, stop_area_id, city_id, is_internal_call)
+              nb integer
             )
             WITH (
               OIDS=FALSE
