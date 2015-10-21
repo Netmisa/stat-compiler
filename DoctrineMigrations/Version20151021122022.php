@@ -55,7 +55,7 @@ class Version20151021122022 extends AbstractMigration
               RAISE NOTICE \'Starting ...\';
               FOR partition IN requests_calls_partitions LOOP
                 RAISE NOTICE \'Partition: %s ...\', quote_ident(partition.tablename);
-                EXECUTE \'CREATE UNIQUE INDEX \' || partition.tablename || \'_add_end_point_id_temp_idx ON stat_compiled.\' || partition.tablename || \' (region_id, api, request_date, user_id, app_name, end_point_id, host, end_point_id);\';
+                EXECUTE \'CREATE UNIQUE INDEX \' || partition.tablename || \'_add_end_point_id_temp_idx ON stat_compiled.\' || partition.tablename || \' (region_id, api, request_date, user_id, app_name, host, end_point_id);\';
                 EXECUTE \'ALTER TABLE stat_compiled.\' || partition.tablename || \' DROP CONSTRAINT \' || partition.tablename || \'_pkey, ADD CONSTRAINT \' || partition.tablename || \'_pkey PRIMARY KEY USING INDEX \' || partition.tablename || \'_add_end_point_id_temp_idx;\';
               END LOOP;
             END$$;
