@@ -158,15 +158,5 @@
             <tag name="updatedb.updater" />
             <tag name="initdb.updater" />
         </service>
-
-        <service id="updaters.response_info" class="CanalTP\StatCompiler\Updater\ResponseInfoUpdater">
-            <argument type="service" id="dbconnection" />
-            <call method="setLogger">
-                <argument type="service" id="logger" />
-            </call>
-            <tag name="updatedb.updater" />
-            <tag name="initdb.updater" />
-        </service>
-
     </services>
 </container>
