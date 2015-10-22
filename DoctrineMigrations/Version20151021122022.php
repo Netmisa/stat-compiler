@@ -27,9 +27,9 @@ class Version20151021122022 extends AbstractMigration
      */
     public function down(Schema $schema)
     {
-        // Update Primary key on requests_calls table (end_point_id removed)
-        $this->addSql('CREATE UNIQUE INDEX remove_end_point_id_temp_idx ON stat_compiled.requests_calls (region_id, api, request_date, user_id, app_name, host);');
-        $this->addSql('ALTER TABLE stat_compiled.requests_calls DROP CONSTRAINT requests_calls_pkey, ADD CONSTRAINT requests_calls_pkey PRIMARY KEY USING INDEX remove_end_point_id_temp_idx;');
+        // Update Primary key on requests_calls table (host added)
+        $this->addSql('CREATE UNIQUE INDEX add_host_id_temp_idx ON stat_compiled.requests_calls (region_id, api, request_date, user_id, app_name, host);');
+        $this->addSql('ALTER TABLE stat_compiled.requests_calls ADD CONSTRAINT requests_calls_pkey PRIMARY KEY USING INDEX add_host_id_temp_idx;');
 
         // New version of the partition auto-creation for requests_calls
         $this->addSql('
@@ -64,8 +64,8 @@ class Version20151021122022 extends AbstractMigration
               RAISE NOTICE \'Starting ...\';
               FOR partition IN requests_calls_partitions LOOP
                 RAISE NOTICE \'Partition: %s ...\', quote_ident(partition.tablename);
-                EXECUTE \'CREATE UNIQUE INDEX \' || partition.tablename || \'_remove_end_point_id_temp_idx ON stat_compiled.\' || partition.tablename || \' (region_id, api, request_date, user_id, app_name, host);\';
-                EXECUTE \'ALTER TABLE stat_compiled.\' || partition.tablename || \' DROP CONSTRAINT \' || partition.tablename || \'_pkey, ADD CONSTRAINT \' || partition.tablename || \'_pkey PRIMARY KEY USING INDEX \' || partition.tablename || \'_remove_end_point_id_temp_idx;\';
+                EXECUTE \'CREATE UNIQUE INDEX \' || partition.tablename || \'_add_host_id_temp_idx ON stat_compiled.\' || partition.tablename || \' (region_id, api, request_date, user_id, app_name, host);\';
+                EXECUTE \'ALTER TABLE stat_compiled.\' || partition.tablename || \' ADD CONSTRAINT \' || partition.tablename || \'_pkey PRIMARY KEY USING INDEX \' || partition.tablename || \'_add_host_id_temp_idx;\';
               END LOOP;
             END$$;
         ');
