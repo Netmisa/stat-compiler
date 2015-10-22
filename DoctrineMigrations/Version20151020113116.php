@@ -2,14 +2,32 @@
 
 namespace DoctrineMigrations;
 
+use Symfony\Component\DependencyInjection\ContainerAwareInterface;
+use Symfony\Component\DependencyInjection\ContainerInterface;
 use Doctrine\DBAL\Migrations\AbstractMigration;
 use Doctrine\DBAL\Schema\Schema;
 
 /**
  * Auto-generated Migration: Please modify to your needs!
  */
-class Version20151020113116 extends AbstractMigration
+class Version20151020113116 extends AbstractMigration implements ContainerAwareInterface
 {
+    private $container = null;
+    private $userBdd = null;
+
+    public function setContainer(ContainerInterface $container = null)
+    {
+        $this->container = $container;
+    }
+
+    /**
+     * @param Schema $schema
+     */
+    public function postUp(Schema $schema)
+    {
+        $this->userBdd = $this->container->getParameter('db.user');
+    }
+
     /**
      * @param Schema $schema
      */
@@ -61,7 +79,7 @@ class Version20151020113116 extends AbstractMigration
                 FOR EACH ROW EXECUTE PROCEDURE coverage_networks_insert_trigger();
         ');
 
-        $this->addSql('grant select on stat_compiled.coverage_networks to usrsql_nmp_stat;');
+        $this->addSql('grant select on stat_compiled.coverage_networks to ' . $this->userBdd . ';');
     }
 
     /**
