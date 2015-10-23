@@ -115,16 +115,16 @@ class Version20151021122022 extends AbstractMigration
                 EXECUTE \'CREATE UNIQUE INDEX \' || partition.tablename || \'_add_host_id_temp_idx ON stat_compiled.\' || partition.tablename || \' (region_id, api, request_date, user_id, app_name, host);\';
                 EXECUTE \'ALTER TABLE stat_compiled.\' || partition.tablename || \' ADD CONSTRAINT \' || partition.tablename || \'_pkey PRIMARY KEY USING INDEX \' || partition.tablename || \'_add_host_id_temp_idx;\';
                 EXECUTE \'DROP INDEX stat_compiled.\' || partition.tablename || \'_region_id_api_request_date_idx;\';
-                EXECUTE \'DROP INDEX stat_compiled.\' || partition.tablename || \'_user_id_request_id_idx;\';
-                EXECUTE \'DROP INDEX stat_compiled.\' || partition.tablename || \'_end_point_id_request_id_idx;\';
+                EXECUTE \'DROP INDEX stat_compiled.\' || partition.tablename || \'_user_id_request_date_idx;\';
+                EXECUTE \'DROP INDEX stat_compiled.\' || partition.tablename || \'_end_point_id_request_date_idx;\';
               END LOOP;
             END$$;
         ');
 
         // requests_calls_indexes added.
-        $this->addSql('DROP INDEX requests_calls_region_id_api_request_date_idx;');
-        $this->addSql('DROP INDEX requests_calls_user_id_request_date_idx;');
-        $this->addSql('DROP INDEX requests_calls_end_point_id_request_date_idx;');
+        $this->addSql('DROP INDEX stat_compiled.requests_calls_region_id_api_request_date_idx;');
+        $this->addSql('DROP INDEX stat_compiled.requests_calls_user_id_request_date_idx;');
+        $this->addSql('DROP INDEX stat_compiled.requests_calls_end_point_id_request_date_idx;');
 
         // Remove end_point_id column from stat_compiled.requests_calls table
         $this->addSql('ALTER TABLE stat_compiled.requests_calls DROP COLUMN end_point_id;');
