@@ -44,7 +44,7 @@ FROM
     stat.requests req
     INNER JOIN stat.coverages cov ON cov.request_id=req.id
     LEFT JOIN stat.journeys j ON j.request_id=req.id
-    INNER JOIN stat.info_response ir ON ir.request_id = req.id
+    LEFT JOIN stat.info_response ir ON ir.request_id = req.id
 WHERE
     req.request_date >= (:start_date :: date)
     AND req.request_date < (:end_date :: date) + interval '1 day'
@@ -93,7 +93,7 @@ FROM
     stat.requests req
     INNER JOIN stat.coverages cov ON cov.request_id=req.id
     LEFT JOIN stat.journeys j ON j.request_id=req.id
-    INNER JOIN stat.info_response ir ON ir.request_id = req.id
+    LEFT JOIN stat.info_response ir ON ir.request_id = req.id
 GROUP BY
     host,
     cov.region_id,
