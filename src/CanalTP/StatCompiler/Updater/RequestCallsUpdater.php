@@ -19,6 +19,7 @@ class RequestCallsUpdater extends AbstractUpdater
 INSERT INTO stat_compiled.requests_calls
 (
   host,
+  end_point_id,
   region_id,
   api,
   user_id,
@@ -30,6 +31,7 @@ INSERT INTO stat_compiled.requests_calls
 )
 SELECT
     host,
+    end_point_id,
     cov.region_id,
     req.api,
     user_id,
@@ -47,6 +49,7 @@ WHERE
     AND req.request_date < (:end_date :: date) + interval '1 day'
 GROUP BY
     host,
+    end_point_id,
     cov.region_id,
     req.api,
     user_id,
@@ -65,6 +68,7 @@ EOT;
 INSERT INTO stat_compiled.requests_calls
 (
   host,
+  end_point_id,
   region_id,
   api,
   user_id,
@@ -76,6 +80,7 @@ INSERT INTO stat_compiled.requests_calls
 )
 SELECT
     host,
+    end_point_id,
     cov.region_id,
     req.api,
     user_id,
@@ -90,6 +95,7 @@ FROM
     LEFT JOIN stat.journeys j ON j.request_id=req.id
 GROUP BY
     host,
+    end_point_id,
     cov.region_id,
     req.api,
     user_id,
