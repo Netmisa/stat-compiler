@@ -167,6 +167,5 @@
             <tag name="updatedb.updater" />
             <tag name="initdb.updater" />
         </service>
-
     </services>
 </container>
