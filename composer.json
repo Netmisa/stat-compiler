@@ -6,7 +6,8 @@
         "symfony/console": "^2.7",
         "monolog/monolog": "^1.13",
         "symfony/dependency-injection": "^2.7",
-        "symfony/config": "^2.7"
+        "symfony/config": "^2.7",
+        "symfony/expression-language": "^2.7"
     },
     "authors": [
         {

@@ -7,8 +7,9 @@
     </imports>
 
     <services>
-        <service id="log.stream_handler" class="Monolog\Handler\StreamHandler">
+        <service id="log.stream_handler" class="Monolog\Handler\RotatingFileHandler">
             <argument>%logger.file%</argument>
+            <argument type="expression">container.hasParameter('logger.maxfiles') ? parameter('logger.maxfiles') : 7</argument>
             <argument>%logger.loglevel%</argument>
         </service>
 
