@@ -41,7 +41,7 @@ SELECT
     DATE(req.request_date) AS request_date,
     COUNT(DISTINCT req.id) AS nb,
     SUM(CASE WHEN j.request_id IS NULL THEN 1 ELSE 0 END) AS nb_without_journey,
-    SUM(object_count)
+    SUM(CASE WHEN object_count IS NULL THEN 0 ELSE object_count END) AS object_count
 FROM
     stat.requests req
     INNER JOIN stat.coverages cov ON cov.request_id=req.id
