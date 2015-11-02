@@ -9,5 +9,6 @@
 
         <parameter key="logger.loglevel" type="constant">Monolog\Logger::INFO</parameter>
         <parameter key="logger.file" type="string">php://stdout</parameter>
+        <parameter key="logger.maxfiles" type="int">7</parameter>
     </parameters>
 </container>
