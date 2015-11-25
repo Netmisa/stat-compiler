@@ -42,26 +42,29 @@ EOT;
         return $insertQuery;
     }
 
-//    protected function getInitQuery()
-//    {
-//        $initQuery = <<<EOT
-//INSERT INTO stat_compiled.coverage_journeys_requests_params
-//(
-//  request_date,
-//  region_id,
-//  is_internal_call,
-//  nb_wheelchair
-//)
-//SELECT req.request_date::date,
-//       cov.region_id,
-//       CASE WHEN req.user_name LIKE '%canaltp%' THEN 1 ELSE 0 END as is_internal_call,
-//       COUNT(DISTINCT j.id) AS nb_wheelchair
-//FROM stat.journeys j
-//INNER JOIN stat.requests req ON req.id = j.request_id
-//INNER JOIN stat.coverages cov ON cov.request_id = req.id
-//GROUP BY req.request_date::date, cov.region_id, is_internal_call
-//;
-//EOT;
-//        return $initQuery;
-//    }
+    protected function getInitQuery()
+    {
+        $initQuery = <<<EOT
+INSERT INTO stat_compiled.coverage_journeys_requests_params
+(
+  request_date,
+  region_id,
+  is_internal_call,
+  nb_wheelchair
+)
+SELECT req.request_date::date,
+       cov.region_id,
+       CASE WHEN req.user_name LIKE '%canaltp%' THEN 1 ELSE 0 END as is_internal_call,
+       COUNT(p.*) AS nb_wheelchair
+FROM stat.journey_request jr
+INNER JOIN stat.requests req ON req.id = jr.request_id
+INNER JOIN stat.coverages cov ON cov.request_id = req.id
+INNER JOIN stat.parameters p ON p.request_id = req.id
+WHERE p.param_key like 'wheelchair'
+AND p.param_value = 'true'
+GROUP BY req.request_date::date, cov.region_id, is_internal_call
+;
+EOT;
+        return $initQuery;
+    }
 }
