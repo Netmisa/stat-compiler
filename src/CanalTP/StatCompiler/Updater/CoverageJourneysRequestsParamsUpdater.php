@@ -31,7 +31,7 @@ FROM stat.journey_request jr
 INNER JOIN stat.requests req ON req.id = jr.request_id
 INNER JOIN stat.coverages cov ON cov.request_id = req.id
 INNER JOIN stat.parameters p ON p.request_id = req.id
-WHERE p.param_key like 'wheelchair'
+WHERE p.param_key = 'wheelchair'
 AND p.param_value = 'true'
 AND req.request_date >= (:start_date :: date)
 AND req.request_date < (:end_date :: date) + interval '1 day'
@@ -60,7 +60,7 @@ FROM stat.journey_request jr
 INNER JOIN stat.requests req ON req.id = jr.request_id
 INNER JOIN stat.coverages cov ON cov.request_id = req.id
 INNER JOIN stat.parameters p ON p.request_id = req.id
-WHERE p.param_key like 'wheelchair'
+WHERE p.param_key = 'wheelchair'
 AND p.param_value = 'true'
 GROUP BY req.request_date::date, cov.region_id, is_internal_call
 ;
