@@ -26,7 +26,7 @@ INSERT INTO stat_compiled.coverage_journeys_requests_params
 SELECT req.request_date::date,
        cov.region_id,
        CASE WHEN req.user_name LIKE '%canaltp%' THEN 1 ELSE 0 END as is_internal_call,
-       COUNT(p.*) AS nb_wheelchair
+       COUNT(req.id) AS nb_wheelchair
 FROM stat.journey_request jr
 INNER JOIN stat.requests req ON req.id = jr.request_id
 INNER JOIN stat.coverages cov ON cov.request_id = req.id
@@ -55,7 +55,7 @@ INSERT INTO stat_compiled.coverage_journeys_requests_params
 SELECT req.request_date::date,
        cov.region_id,
        CASE WHEN req.user_name LIKE '%canaltp%' THEN 1 ELSE 0 END as is_internal_call,
-       COUNT(p.*) AS nb_wheelchair
+       COUNT(req.id) AS nb_wheelchair
 FROM stat.journey_request jr
 INNER JOIN stat.requests req ON req.id = jr.request_id
 INNER JOIN stat.coverages cov ON cov.request_id = req.id
