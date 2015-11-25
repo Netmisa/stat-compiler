@@ -21,7 +21,6 @@ class Version20151123155509 extends AbstractMigration
               request_date timestamp without time zone,
               region_id text NOT NULL,
               is_internal_call integer,
-              nb integer,
               nb_wheelchair integer,
               CONSTRAINT coverage_journeys_requests_params_pkey PRIMARY KEY (request_date, region_id, is_internal_call)
             )
