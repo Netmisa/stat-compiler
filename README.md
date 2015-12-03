@@ -49,7 +49,7 @@ Example use cases:
 
 2/ Based on the above example, I want to update only the table requests_calls.
 
-> bin/stat_compiler updatedb 2015-10-01 2015-11-01 --only-update=resquests_calls
+> bin/stat_compiler updatedb 2015-10-01 2015-11-01 --only-update=requests_calls
 
 For more information about the arguments and options, execute command:
 
