@@ -40,7 +40,7 @@ SELECT
     CASE WHEN req.user_name LIKE '%canaltp%' THEN 1 ELSE 0 END as is_internal_call,
     DATE(req.request_date) AS request_date,
     COUNT(DISTINCT req.id) AS nb,
-    SUM(CASE WHEN j.request_id IS NULL THEN 1 ELSE 0 END) AS nb_without_journey,
+    COUNT(DISTINCT CASE WHEN j.request_id IS NULL THEN req.id ELSE null END) AS nb_without_journey,
     SUM(CASE WHEN object_count IS NULL THEN 0 ELSE object_count END) AS object_count
 FROM
     stat.requests req
@@ -92,7 +92,7 @@ SELECT
     CASE WHEN req.user_name LIKE '%canaltp%' THEN 1 ELSE 0 END as is_internal_call,
     DATE(req.request_date) AS request_date,
     COUNT(DISTINCT req.id) AS nb,
-    SUM(CASE WHEN j.request_id IS NULL THEN 1 ELSE 0 END) AS nb_without_journey,
+    COUNT(DISTINCT CASE WHEN j.request_id IS NULL THEN req.id ELSE null END) AS nb_without_journey,
     SUM(object_count)
 FROM
     stat.requests req
