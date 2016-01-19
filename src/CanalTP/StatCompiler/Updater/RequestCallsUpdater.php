@@ -18,7 +18,6 @@ class RequestCallsUpdater extends AbstractUpdater
         $insertQuery = <<<EOT
 INSERT INTO stat_compiled.requests_calls
 (
-  host,
   end_point_id,
   region_id,
   api,
@@ -31,7 +30,6 @@ INSERT INTO stat_compiled.requests_calls
   object_count
 )
 SELECT
-    host,
     end_point_id,
     cov.region_id,
     req.api,
@@ -51,7 +49,6 @@ WHERE
     req.request_date >= (:start_date :: date)
     AND req.request_date < (:end_date :: date) + interval '1 day'
 GROUP BY
-    host,
     end_point_id,
     cov.region_id,
     req.api,
