@@ -67,7 +67,6 @@ EOT;
         $initQuery = <<<EOT
 INSERT INTO stat_compiled.requests_calls
 (
-  host,
   end_point_id,
   region_id,
   api,
@@ -80,7 +79,6 @@ INSERT INTO stat_compiled.requests_calls
   object_count
 )
 SELECT
-    host,
     end_point_id,
     cov.region_id,
     req.api,
@@ -97,7 +95,6 @@ FROM
     LEFT JOIN stat.journeys j ON j.request_id=req.id
     LEFT JOIN stat.info_response ir ON ir.request_id = req.id
 GROUP BY
-    host,
     end_point_id,
     cov.region_id,
     req.api,
